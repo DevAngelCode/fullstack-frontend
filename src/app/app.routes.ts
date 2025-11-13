@@ -8,6 +8,7 @@ import { authGuard } from './auth/guard/auth.guard';
 import { roleGuard } from './auth/guard/role.guard';
 import { publicGuard } from './auth/guard/public.guard'; // Import publicGuard
 import { NotFoundComponent } from './shared/component/not-found/not-found.component'; // Import NotFoundComponent
+import { ProfileComponent } from './shared/component/profile/profile.component'; // Import ProfileComponent
 
 export const routes: Routes = [
   { path: '', component: PaginaPrincipalComponent }, // Public home page
@@ -19,6 +20,7 @@ export const routes: Routes = [
     data: { roles: ['ROLE_ADMIN'] },
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
+      { path: 'profile', component: ProfileComponent }, // Admin profile route
       { path: '**', redirectTo: 'dashboard' }
     ]
   },
@@ -28,6 +30,7 @@ export const routes: Routes = [
     data: { roles: ['ROLE_CLIENTE'] },
     children: [
       { path: '', component: PaginaPrincipalComponent }, // Client's main page is the public home
+      { path: 'profile', component: ProfileComponent }, // Client profile route
       { path: '**', redirectTo: '' }
     ]
   },
@@ -37,6 +40,7 @@ export const routes: Routes = [
     data: { roles: ['ROLE_TECNICO'] },
     children: [
       { path: 'dashboard', component: TecnicoDashboardComponent },
+      { path: 'profile', component: ProfileComponent }, // Tecnico profile route
       { path: '**', redirectTo: 'dashboard' }
     ]
   },

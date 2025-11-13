@@ -1,53 +1,42 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-    <div class="text-center mb-6">
-      <img src="assets/logo-mechanic.png" alt="Mechanic Company Logo" class="mx-auto h-20 w-auto mb-4">
-      <h2 class="text-3xl font-extrabold text-gray-900">Iniciar Sesión</h2>
-      <p class="mt-2 text-sm text-gray-600">
-        Bienvenido de nuevo, por favor ingresa tus credenciales.
-      </p>
-    </div>
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
-      <div class="mb-4">
-        <label for="usernameOrEmail" class="block text-sm font-medium text-gray-700">Usuario o Email</label>
-        <input
-          type="text"
-          id="usernameOrEmail"
-          formControlName="usernameOrEmail"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          placeholder="Tu nombre de usuario o email"
-        />
-        <div *ngIf="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched" class="text-red-500 text-xs mt-1">
-          El usuario o email es requerido.
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg p-4">
+        <div class="card-header bg-primary text-white text-center py-3 rounded-top">
+          <h2 class="h3 mb-0">Iniciar Sesión</h2>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <div class="mb-3">
+              <label for="usernameOrEmail" class="form-label">Nombre de Usuario o Correo Electrónico</label>
+              <input type="text" id="usernameOrEmail" formControlName="usernameOrEmail" class="form-control"
+                     [class.is-invalid]="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched"
+                     placeholder="Ingresa tu nombre de usuario o correo electrónico">
+              <div *ngIf="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched" class="invalid-feedback">
+                El nombre de usuario o correo electrónico es requerido.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" id="password" formControlName="password" class="form-control"
+                     [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                     placeholder="Ingresa tu contraseña">
+              <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+                La contraseña es requerida.
+              </div>
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg mt-3" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+            </div>
+          </form>
+          <div class="mt-3 text-center">
+            <p>¿No tienes una cuenta? <a routerLink="/auth/register">Regístrate aquí</a></p>
+          </div>
         </div>
       </div>
-      <div class="mb-6">
-        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          placeholder="Tu contraseña"
-        />
-        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-xs mt-1">
-          La contraseña es requerida.
-        </div>
-      </div>
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid"
-        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-      >
-        Iniciar Sesión
-      </button>
-    </form>
-    <p class="mt-6 text-center text-sm text-gray-600">
-      ¿No tienes una cuenta?
-      <a routerLink="/auth/register" class="font-medium text-indigo-600 hover:text-indigo-500">Regístrate aquí</a>
-    </p>
-    <div *ngIf="errorMessage" class="mt-4 text-center text-red-600 text-sm">
-      {{ errorMessage }}
     </div>
   </div>
 </div>

@@ -1,27 +1,51 @@
-<nav class="bg-gray-800 p-4 text-white shadow-md">
-  <div class="container mx-auto flex justify-between items-center">
-    <a routerLink="/" class="text-2xl font-bold text-indigo-400 hover:text-indigo-300">
-      <img src="/assets/logo-mechanic.png" alt="Mechanic Logo" class="h-10 inline-block mr-2">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img src="/assets/logo-mechanic.png" alt="Mechanic Logo" class="h-10 d-inline-block align-text-top me-2" style="height: 40px;">
       Mecánica App
     </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <!-- Public Links (always visible) -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/">Inicio</a>
+        </li>
 
-    <div class="flex space-x-4 items-center">
-      <!-- Public Links (always visible) -->
-      <a routerLink="/" class="hover:text-indigo-400">Inicio</a>
+        <!-- Links for Authenticated Users -->
+        <ng-container *ngIf="isLoggedIn">
+          <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
+            <a class="nav-link" routerLink="/admin/dashboard">Admin Dashboard</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
+            <a class="nav-link" routerLink="/admin/profile">Admin Perfil</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole('ROLE_CLIENTE')">
+            <a class="nav-link" routerLink="/cliente/profile">Mi Perfil</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole('ROLE_TECNICO')">
+            <a class="nav-link" routerLink="/tecnico/dashboard">Tecnico Dashboard</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole('ROLE_TECNICO')">
+            <a class="nav-link" routerLink="/tecnico/profile">Tecnico Perfil</a>
+          </li>
+          <li class="nav-item">
+            <button (click)="logout()" class="btn btn-danger ms-lg-3">Cerrar Sesión</button>
+          </li>
+        </ng-container>
 
-      <!-- Links for Authenticated Users -->
-      <ng-container *ngIf="isLoggedIn">
-        <a *ngIf="hasRole('ROLE_ADMIN')" routerLink="/admin/dashboard" class="hover:text-indigo-400">Admin Dashboard</a>
-        <a *ngIf="hasRole('ROLE_CLIENTE')" routerLink="/cliente" class="hover:text-indigo-400">Mi Perfil</a>
-        <a *ngIf="hasRole('ROLE_TECNICO')" routerLink="/tecnico/dashboard" class="hover:text-indigo-400">Tecnico Dashboard</a>
-        <button (click)="logout()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md">Cerrar Sesión</button>
-      </ng-container>
-
-      <!-- Links for Non-Authenticated Users -->
-      <ng-container *ngIf="!isLoggedIn">
-        <a routerLink="/auth/login" class="hover:text-indigo-400">Iniciar Sesión</a>
-        <a routerLink="/auth/register" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-md">Registrarse</a>
-      </ng-container>
+        <!-- Links for Non-Authenticated Users -->
+        <ng-container *ngIf="!isLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/auth/login">Iniciar Sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary ms-lg-3" routerLink="/auth/register">Registrarse</a>
+          </li>
+        </ng-container>
+      </ul>
     </div>
   </div>
 </nav>

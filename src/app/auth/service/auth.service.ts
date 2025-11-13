@@ -19,7 +19,7 @@ export class AuthService {
   public currentUser: Observable<LoginResponse | null>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<LoginResponse | null>(JSON.parse(localStorage.getItem('currentUser') || 'null'));
+    this.currentUserSubject = new BehaviorSubject<LoginResponse | null>(JSON.parse(localStorage.getItem('user') || 'null'));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -31,7 +31,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(API_URL + 'login', loginRequest).pipe(
       tap(response => {
         if (response.token) { // Change from jwt to token
-          localStorage.setItem('currentUser', JSON.stringify(response));
+          localStorage.setItem('user', JSON.stringify(response));
           this.currentUserSubject.next(response);
         }
       })
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('user');
     this.currentUserSubject.next(null);
   }
 

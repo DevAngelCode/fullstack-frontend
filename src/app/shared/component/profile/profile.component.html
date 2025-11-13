@@ -1,0 +1,67 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg p-4">
+        <div class="card-header bg-primary text-white text-center py-3 rounded-top">
+          <h2 class="h3 mb-0">Editar Perfil</h2>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                     [class.is-invalid]="profileForm.get('nombre')?.invalid && profileForm.get('nombre')?.touched"
+                     placeholder="Nombre">
+              <div *ngIf="profileForm.get('nombre')?.invalid && profileForm.get('nombre')?.touched" class="invalid-feedback">
+                El nombre es requerido.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" id="apellido" formControlName="apellido" class="form-control"
+                     placeholder="Apellido">
+            </div>
+
+            <div class="mb-3">
+              <label for="username" class="form-label">Nombre de Usuario</label>
+              <input type="text" id="username" formControlName="username" class="form-control"
+                     [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
+                     placeholder="Nombre de Usuario">
+              <div *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched" class="invalid-feedback">
+                El nombre de usuario es requerido.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input type="email" id="email" formControlName="email" class="form-control"
+                     [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+                     placeholder="Correo Electrónico">
+              <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="invalid-feedback">
+                <span *ngIf="profileForm.get('email')?.errors?.['required']">El correo electrónico es requerido.</span>
+                <span *ngIf="profileForm.get('email')?.errors?.['email']">Por favor, introduce un correo electrónico válido.</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="telefono" class="form-label">Teléfono</label>
+              <input type="text" id="telefono" formControlName="telefono" class="form-control"
+                     placeholder="Teléfono">
+            </div>
+
+            <div *ngIf="message" class="alert mt-3" [class.alert-danger]="isError" [class.alert-success]="!isError">
+              {{ message }}
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="profileForm.invalid">
+                Actualizar Perfil
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
