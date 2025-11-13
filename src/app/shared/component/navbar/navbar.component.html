@@ -1,0 +1,27 @@
+<nav class="bg-gray-800 p-4 text-white shadow-md">
+  <div class="container mx-auto flex justify-between items-center">
+    <a routerLink="/" class="text-2xl font-bold text-indigo-400 hover:text-indigo-300">
+      <img src="/assets/logo-mechanic.png" alt="Mechanic Logo" class="h-10 inline-block mr-2">
+      Mecánica App
+    </a>
+
+    <div class="flex space-x-4 items-center">
+      <!-- Public Links (always visible) -->
+      <a routerLink="/" class="hover:text-indigo-400">Inicio</a>
+
+      <!-- Links for Authenticated Users -->
+      <ng-container *ngIf="isLoggedIn">
+        <a *ngIf="hasRole('ROLE_ADMIN')" routerLink="/admin/dashboard" class="hover:text-indigo-400">Admin Dashboard</a>
+        <a *ngIf="hasRole('ROLE_CLIENTE')" routerLink="/cliente" class="hover:text-indigo-400">Mi Perfil</a>
+        <a *ngIf="hasRole('ROLE_TECNICO')" routerLink="/tecnico/dashboard" class="hover:text-indigo-400">Tecnico Dashboard</a>
+        <button (click)="logout()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md">Cerrar Sesión</button>
+      </ng-container>
+
+      <!-- Links for Non-Authenticated Users -->
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/auth/login" class="hover:text-indigo-400">Iniciar Sesión</a>
+        <a routerLink="/auth/register" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-md">Registrarse</a>
+      </ng-container>
+    </div>
+  </div>
+</nav>
