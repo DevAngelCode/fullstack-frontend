@@ -1,15 +1,15 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header bg-primary text-white">
-          <h3 class="mb-0">Admin Dashboard</h3>
-        </div>
-        <div class="card-body">
-          <p>Welcome to the Admin Dashboard!</p>
-          <!-- Add admin-specific content here -->
-        </div>
+<div class="dashboard-container">
+  <h2 class="welcome-message">Bienvenido, {{ adminName }}!</h2>
+  <p class="dashboard-intro">Aquí puedes gestionar las diferentes secciones de tu panel de administración.</p>
+
+  <div class="card-grid">
+    <div class="dashboard-card" *ngFor="let card of dashboardCards" [routerLink]="card.routerLink">
+      <div class="card-icon">
+        <i class="{{ card.icon }}"></i>
       </div>
+      <h3 class="card-title">{{ card.title }}</h3>
+      <p class="card-description">{{ card.description }}</p>
+      <button class="btn btn-card">Ir a {{ card.title }}</button>
     </div>
   </div>
 </div>

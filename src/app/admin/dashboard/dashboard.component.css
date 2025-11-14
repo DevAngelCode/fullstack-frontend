@@ -1,0 +1,97 @@
+.dashboard-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+.welcome-message {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.dashboard-intro {
+  color: #666;
+  font-size: 1.1em;
+  margin-bottom: 40px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  justify-content: center;
+}
+
+.dashboard-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-icon {
+  font-size: 3em;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.card-title {
+  color: #333;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  color: #777;
+  font-size: 0.95em;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1; /* Allows description to take available space */
+}
+
+.btn-card {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+  text-decoration: none; /* Remove underline for routerLink */
+}
+
+.btn-card:hover {
+  background-color: #218838;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .welcome-message {
+    font-size: 2em;
+  }
+
+  .dashboard-intro {
+    font-size: 1em;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr; /* Stack cards on small screens */
+  }
+}

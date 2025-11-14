@@ -1,0 +1,86 @@
+<div class="servicios-container">
+  <h2>Gestión de Servicios</h2>
+
+  <!-- Formulario para agregar/editar servicio -->
+  <div class="form-card">
+    <h3>{{ isEditing ? 'Editar Servicio' : 'Agregar Nuevo Servicio' }}</h3>
+    <form [formGroup]="servicioForm" (ngSubmit)="saveServicio()">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" formControlName="nombre" required>
+        <div *ngIf="servicioForm.get('nombre')?.invalid && (servicioForm.get('nombre')?.dirty || servicioForm.get('nombre')?.touched)" class="error-message">
+          <div *ngIf="servicioForm.get('nombre')?.errors?.['required']">El nombre es requerido.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" formControlName="descripcion" required></textarea>
+        <div *ngIf="servicioForm.get('descripcion')?.invalid && (servicioForm.get('descripcion')?.dirty || servicioForm.get('descripcion')?.touched)" class="error-message">
+          <div *ngIf="servicioForm.get('descripcion')?.errors?.['required']">La descripción es requerida.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" formControlName="precio" required>
+        <div *ngIf="servicioForm.get('precio')?.invalid && (servicioForm.get('precio')?.dirty || servicioForm.get('precio')?.touched)" class="error-message">
+          <div *ngIf="servicioForm.get('precio')?.errors?.['required']">El precio es requerido.</div>
+          <div *ngIf="servicioForm.get('precio')?.errors?.['min']">El precio debe ser mayor o igual a 0.</div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="servicioForm.invalid">
+          <i class="fas fa-{{ isEditing ? 'save' : 'plus' }}"></i> {{ isEditing ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button type="button" class="btn btn-secondary" *ngIf="isEditing" (click)="resetForm()">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lista de servicios en tabla -->
+  <div class="servicios-table-container">
+    <h3>Servicios Existentes</h3>
+    <div class="table-responsive">
+      <table class="servicios-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let servicio of paginatedServicios" [class.highlighted-row]="servicio.id === highlightedRowId">
+            <td data-label="ID">{{ servicio.id }}</td>
+            <td data-label="Nombre">{{ servicio.nombre }}</td>
+            <td data-label="Descripción">{{ servicio.descripcion }}</td>
+            <td>S/{{ servicio.precio | number:'1.2-2' }}</td>
+            <td>
+              <button class="btn btn-edit" (click)="editServicio(servicio)">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+              <button class="btn btn-delete" (click)="deleteServicio(servicio.id)">
+                <i class="fas fa-trash-alt"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p *ngIf="paginatedServicios.length === 0" class="no-servicios-message">No hay servicios disponibles.</p>
+
+    <!-- Paginación -->
+    <div class="pagination-controls" *ngIf="collectionSize > pageSize">
+      <button class="btn btn-pagination" (click)="page = page - 1; refreshServicios()" [disabled]="page === 1">
+        <i class="fas fa-chevron-left"></i> Anterior
+      </button>
+      <span>Página {{ page }} de {{ totalPages }}</span>
+      <button class="btn btn-pagination" (click)="page = page + 1; refreshServicios()" [disabled]="page * pageSize >= collectionSize">
+        Siguiente <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

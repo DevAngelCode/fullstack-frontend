@@ -9,9 +9,12 @@ import { roleGuard } from './auth/guard/role.guard';
 import { publicGuard } from './auth/guard/public.guard'; // Import publicGuard
 import { NotFoundComponent } from './shared/component/not-found/not-found.component'; // Import NotFoundComponent
 import { ProfileComponent } from './shared/component/profile/profile.component'; // Import ProfileComponent
+import { ServiciosComponent } from './public/pages/servicios/servicios.component'; // Import Public ServiciosComponent
+import { ServiciosComponent as AdminServiciosComponent } from './admin/servicios/servicios.component'; // Import Admin ServiciosComponent
 
 export const routes: Routes = [
   { path: '', component: PaginaPrincipalComponent }, // Public home page
+  { path: 'servicios', component: ServiciosComponent }, // Public services page
   { path: 'auth/login', component: LoginComponent, canActivate: [publicGuard] }, // Apply publicGuard
   { path: 'auth/register', component: RegisterComponent, canActivate: [publicGuard] }, // Apply publicGuard
   {
@@ -21,6 +24,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'profile', component: ProfileComponent }, // Admin profile route
+      { path: 'servicios', component: AdminServiciosComponent }, // Admin services route
       { path: '**', redirectTo: 'dashboard' }
     ]
   },

@@ -2,7 +2,7 @@
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
       <img src="/assets/logo-mechanic.png" alt="Mechanic Logo" class="h-10 d-inline-block align-text-top me-2" style="height: 40px;">
-      Mecánica App
+      Auto Pro
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -21,6 +21,9 @@
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
             <a class="nav-link" routerLink="/admin/profile">Admin Perfil</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
+            <a class="nav-link" routerLink="/admin/servicios">Servicios</a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_CLIENTE')">
             <a class="nav-link" routerLink="/cliente/profile">Mi Perfil</a>
