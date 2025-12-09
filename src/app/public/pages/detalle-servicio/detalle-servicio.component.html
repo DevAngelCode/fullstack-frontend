@@ -1,0 +1,67 @@
+<div class="container mt-4 cuadroPrincipal">
+    <div class="row">
+        <h2 class="mb-4">{{ servicio ? (servicio.nombre | uppercase) : 'Cargando...' }}</h2>
+        <div class="col-md-7">
+            <div class="content" *ngIf="servicio">
+                <!-- Image -->
+                <img *ngIf="servicio.imagenBase64" [src]="servicio.imagenBase64" [alt]="servicio.nombre"
+                    class="img-fluid w-100 mb-4">
+                <img *ngIf="!servicio.imagenBase64" src="assets/img/default-service.jpg" [alt]="servicio.nombre"
+                    class="img-fluid w-100 mb-4">
+
+                <h4 class="mt-4">DESCRIPCIÓN</h4>
+                <div class="description-content ql-editor mt-3" [innerHTML]="servicio.descripcion | safeHtml"></div>
+
+                <!-- Hardcoded Specifications example since we don't have them in backend yet -->
+                <h4 class="mt-4">ESPECIFICACIONES</h4>
+                <p>
+                    <strong>Alcance del Servicio:</strong>
+                    Diagnóstico integral, mano de obra especializada, uso de herramientas de precisión.
+                </p>
+                <p>
+                    <strong>Garantía:</strong>
+                    3 meses de garantía por el trabajo realizado.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="sidebar">
+                <h4 class="mb-4">Selecciona tu Sede</h4>
+
+                <!-- Lista de sedes -->
+                <div class="list-group mb-4">
+                    <a *ngFor="let sede of sedes" href="#"
+                        class="list-group-item list-group-item-action d-flex align-items-center bg-white mb-2 rounded border-0">
+                        <i class="bi bi-geo-alt me-2 text-primary"></i>
+                        <div>
+                            <h5 class="mb-0">{{ sede.nombre }}</h5>
+                            <small class="text-muted">{{ sede.direccion }}</small>
+                        </div>
+                    </a>
+                </div>
+
+                <form action="/paso1" method="post">
+                    <!-- Formulario para seleccionar sede -->
+                    <div class="form-group mb-4">
+                        <input type="hidden" name="servicio" [value]="servicio?.id" />
+                        <label for="sedeSelect" class="form-label fw-bold">Elige una sede:</label>
+                        <select id="sedeSelect" class="form-select" name="sede">
+                            <option *ngFor="let sede of sedes" [value]="sede.id">{{ sede.nombre }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Información de costo -->
+                    <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-white rounded">
+                        <span class="fw-bold">COSTO ESTIMADO:</span>
+                        <span class="fs-4 text-primary fw-bold" *ngIf="servicio">S/. {{ servicio.precio }}</span>
+                    </div>
+
+                    <!-- Botón para agendar cita -->
+                    <button class="btn btn-primary w-100 fw-bold shadow-sm">Agendar Cita</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

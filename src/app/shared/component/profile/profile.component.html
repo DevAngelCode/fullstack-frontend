@@ -1,7 +1,8 @@
 <div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-      <div class="card shadow-lg p-4">
+  <div class="row">
+    <!-- Edit Profile Column -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-lg h-100">
         <div class="card-header bg-primary text-white text-center py-3 rounded-top">
           <h2 class="h3 mb-0">Editar Perfil</h2>
         </div>
@@ -10,25 +11,26 @@
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
               <input type="text" id="nombre" formControlName="nombre" class="form-control"
-                     [class.is-invalid]="profileForm.get('nombre')?.invalid && profileForm.get('nombre')?.touched"
-                     placeholder="Nombre">
-              <div *ngIf="profileForm.get('nombre')?.invalid && profileForm.get('nombre')?.touched" class="invalid-feedback">
+                [class.is-invalid]="profileForm.get('nombre')?.invalid && profileForm.get('nombre')?.touched"
+                placeholder="Nombre">
+              <div *ngIf="profileForm.get('nombre')?.invalid && profileForm.get('nombre')?.touched"
+                class="invalid-feedback">
                 El nombre es requerido.
               </div>
             </div>
 
             <div class="mb-3">
               <label for="apellido" class="form-label">Apellido</label>
-              <input type="text" id="apellido" formControlName="apellido" class="form-control"
-                     placeholder="Apellido">
+              <input type="text" id="apellido" formControlName="apellido" class="form-control" placeholder="Apellido">
             </div>
 
             <div class="mb-3">
               <label for="username" class="form-label">Nombre de Usuario</label>
               <input type="text" id="username" formControlName="username" class="form-control"
-                     [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
-                     placeholder="Nombre de Usuario">
-              <div *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched" class="invalid-feedback">
+                [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
+                placeholder="Nombre de Usuario">
+              <div *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
+                class="invalid-feedback">
                 El nombre de usuario es requerido.
               </div>
             </div>
@@ -36,18 +38,19 @@
             <div class="mb-3">
               <label for="email" class="form-label">Correo Electrónico</label>
               <input type="email" id="email" formControlName="email" class="form-control"
-                     [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
-                     placeholder="Correo Electrónico">
-              <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="invalid-feedback">
+                [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+                placeholder="Correo Electrónico">
+              <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+                class="invalid-feedback">
                 <span *ngIf="profileForm.get('email')?.errors?.['required']">El correo electrónico es requerido.</span>
-                <span *ngIf="profileForm.get('email')?.errors?.['email']">Por favor, introduce un correo electrónico válido.</span>
+                <span *ngIf="profileForm.get('email')?.errors?.['email']">Por favor, introduce un correo electrónico
+                  válido.</span>
               </div>
             </div>
 
             <div class="mb-3">
               <label for="telefono" class="form-label">Teléfono</label>
-              <input type="text" id="telefono" formControlName="telefono" class="form-control"
-                     placeholder="Teléfono">
+              <input type="text" id="telefono" formControlName="telefono" class="form-control" placeholder="Teléfono">
             </div>
 
             <div *ngIf="message" class="alert mt-3" [class.alert-danger]="isError" [class.alert-success]="!isError">
@@ -57,6 +60,72 @@
             <div class="d-grid mt-4">
               <button type="submit" class="btn btn-primary btn-lg" [disabled]="profileForm.invalid">
                 Actualizar Perfil
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Change Password Column -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-lg h-100">
+        <div class="card-header bg-secondary text-white text-center py-3 rounded-top">
+          <h2 class="h3 mb-0">Cambiar Contraseña</h2>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">Contraseña Actual</label>
+              <input type="password" id="currentPassword" formControlName="currentPassword" class="form-control"
+                [class.is-invalid]="passwordForm.get('currentPassword')?.invalid && (passwordForm.get('currentPassword')?.touched || passwordForm.get('currentPassword')?.dirty)"
+                [class.is-valid]="isCurrentPasswordValid" (blur)="onCurrentPasswordBlur()"
+                placeholder="Contraseña Actual">
+              <div
+                *ngIf="passwordForm.get('currentPassword')?.invalid && (passwordForm.get('currentPassword')?.touched || passwordForm.get('currentPassword')?.dirty)"
+                class="invalid-feedback">
+                <span *ngIf="passwordForm.get('currentPassword')?.errors?.['required']">La contraseña actual es
+                  requerida.</span>
+                <span *ngIf="passwordForm.get('currentPassword')?.errors?.['incorrect']">La contraseña es
+                  incorrecta.</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">Nueva Contraseña</label>
+              <input type="password" id="newPassword" formControlName="newPassword" class="form-control"
+                [class.is-invalid]="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched"
+                placeholder="Nueva Contraseña">
+              <div *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched"
+                class="invalid-feedback">
+                <span *ngIf="passwordForm.get('newPassword')?.errors?.['required']">La nueva contraseña es
+                  requerida.</span>
+                <span *ngIf="passwordForm.get('newPassword')?.errors?.['minlength']">Debe tener al menos 6
+                  caracteres.</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+              <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control"
+                [class.is-invalid]="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched"
+                placeholder="Confirmar Nueva Contraseña">
+              <div *ngIf="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched"
+                class="invalid-feedback">
+                <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['required']">Confirmación requerida.</span>
+                <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['mismatch']">Las contraseñas no
+                  coinciden.</span>
+              </div>
+            </div>
+
+            <div *ngIf="passwordMessage" class="alert mt-3" [class.alert-danger]="isPasswordError"
+              [class.alert-success]="!isPasswordError">
+              {{ passwordMessage }}
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-secondary btn-lg" [disabled]="passwordForm.invalid">
+                Cambiar Contraseña
               </button>
             </div>
           </form>

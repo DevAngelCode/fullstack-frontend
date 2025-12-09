@@ -6,6 +6,8 @@ import { LocalStorageService } from '../../../auth/service/local-storage.service
 import { UsuarioService } from '../../service/usuario.service';
 import { ProfileRequest } from '../../model/profile-request'; // Corrected import path for ProfileRequest
 import { UserProfileResponse } from '../../model/user-profile-response'; // Import UserProfileResponse
+import { matchPasswordValidator } from '../../validators/match-password.validator';
+import { ChangePasswordRequest } from '../../model/change-password-request.model';
 
 @Component({
   selector: 'app-shared-profile',
@@ -20,6 +22,10 @@ export class ProfileComponent implements OnInit {
   roles: string[] = [];
   message: string = '';
   isError: boolean = false;
+  passwordForm: FormGroup;
+  passwordMessage: string = '';
+  isPasswordError: boolean = false;
+  isCurrentPasswordValid: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,6 +40,12 @@ export class ProfileComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       telefono: [''] // New field, optional
     });
+
+    this.passwordForm = this.fb.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, { validators: matchPasswordValidator('newPassword', 'confirmPassword') });
   }
 
   ngOnInit(): void {
@@ -110,6 +122,83 @@ export class ProfileComponent implements OnInit {
       error: (error: any) => {
         this.message = 'Error al actualizar el perfil: ' + (error.error?.message || error.message);
         this.isError = true;
+      }
+    });
+  }
+
+  onCurrentPasswordBlur(): void {
+    const currentPasswordControl = this.passwordForm.get('currentPassword');
+    if (currentPasswordControl?.value && this.userId) {
+      this.usuarioService.verifyPassword(this.userId, currentPasswordControl.value).subscribe({
+        next: (isValid) => {
+          if (!isValid) {
+            currentPasswordControl.setErrors({ incorrect: true });
+            this.isCurrentPasswordValid = false;
+          } else {
+            this.isCurrentPasswordValid = true;
+            // Remove 'incorrect' error if it exists
+            if (currentPasswordControl.hasError('incorrect')) {
+              delete currentPasswordControl.errors!['incorrect'];
+              if (Object.keys(currentPasswordControl.errors!).length === 0) {
+                currentPasswordControl.setErrors(null);
+              }
+            }
+          }
+        },
+        error: () => {
+          // If error checking (e.g. timeout), maybe set error or just ignore
+        }
+      });
+    }
+  }
+
+  onChangePassword(): void {
+    this.passwordMessage = '';
+    this.isPasswordError = false;
+
+    // Trigger blur manually just in case
+    // this.onCurrentPasswordBlur(); // Removing this as it's async and might race.
+    // We rely on standard submit or the user having blurred.
+    // Actually, we should probably re-verify or trust the backend call on submit.
+
+    if (this.passwordForm.invalid) {
+      this.passwordMessage = 'Por favor, corrija los errores en el formulario.';
+      this.isPasswordError = true;
+      return;
+    }
+
+    if (this.userId === null) {
+      this.passwordMessage = 'ID de usuario no encontrado.';
+      this.isPasswordError = true;
+      return;
+    }
+
+    const { currentPassword, newPassword } = this.passwordForm.value;
+
+    if (currentPassword === newPassword) {
+      this.passwordMessage = 'La nueva contraseña no puede ser igual a la actual.';
+      this.isPasswordError = true;
+      return;
+    }
+
+    const changePasswordRequest: ChangePasswordRequest = { currentPassword, newPassword };
+
+    this.usuarioService.changePassword(this.userId, changePasswordRequest).subscribe({
+      next: () => {
+        this.passwordMessage = '¡Contraseña actualizada exitosamente!';
+        this.isPasswordError = false;
+        this.passwordForm.reset();
+      },
+      error: (error: any) => {
+        // Try to extract the specific message from the backend response
+        let errorMessage = 'Error al cambiar la contraseña';
+        if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        this.passwordMessage = errorMessage;
+        this.isPasswordError = true;
       }
     });
   }

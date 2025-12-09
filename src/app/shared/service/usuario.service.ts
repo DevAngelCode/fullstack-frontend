@@ -19,6 +19,17 @@ export class UsuarioService {
   }
 
   updateUserProfile(id: number, profileRequest: ProfileRequest): Observable<UserProfileResponse> {
-    return this.http.put<UserProfileResponse>(`${API_URL}/${id}`, profileRequest);
+    const url = `${API_URL}/${id}`;
+    return this.http.put<UserProfileResponse>(url, profileRequest);
+  }
+
+  changePassword(id: number, changePasswordRequest: any): Observable<void> {
+    const url = `${API_URL}/${id}/change-password`;
+    return this.http.put<void>(url, changePasswordRequest);
+  }
+
+  verifyPassword(id: number, password: string): Observable<boolean> {
+    const url = `${API_URL}/${id}/verify-password`;
+    return this.http.post<boolean>(url, { password });
   }
 }

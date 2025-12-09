@@ -1,0 +1,55 @@
+/* CSS for Detail Service Page */
+body {
+    background-color: #EDEDED;
+    font-family: Arial, sans-serif;
+}
+
+.ql-editor {
+    padding: 0 !important;
+}
+
+.content {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.content img {
+    border-radius: 20px;
+}
+
+.sidebar {
+    background-color: #DAD7D7;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.sidebar button {
+    border-radius: 20px;
+    height: 40px;
+}
+
+.cuadroPrincipal {
+    min-height: 100vh;
+}
+
+.description-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.description-content ::ng-deep p {
+    margin-bottom: 0;
+    min-height: 1.2em;
+    /* Ensure empty lines are visible */
+}
+
+.description-content ::ng-deep ul,
+.description-content ::ng-deep ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+.description-content ::ng-deep strong {
+    font-weight: 600;
+}

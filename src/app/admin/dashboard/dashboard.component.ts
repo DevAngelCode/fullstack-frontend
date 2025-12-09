@@ -37,6 +37,12 @@ export class DashboardComponent implements OnInit {
         routerLink: '/admin/servicios'
       },
       {
+        title: 'Gestionar Sedes',
+        description: 'Administra las ubicaciones físicas del taller.',
+        icon: 'fas fa-map-marker-alt',
+        routerLink: '/admin/sedes'
+      },
+      {
         title: 'Gestionar Perfil',
         description: 'Actualiza tu información personal y credenciales de administrador.',
         icon: 'fas fa-user-cog',

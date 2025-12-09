@@ -1,0 +1,97 @@
+<div class="servicios-container">
+    <h2>Gestión de Sedes</h2>
+
+    <!-- Formulario para agregar/editar sede -->
+    <div class="form-card">
+        <h3>{{ isEditing ? 'Editar Sede' : 'Agregar Nueva Sede' }}</h3>
+        <form [formGroup]="sedeForm" (ngSubmit)="saveSede()">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" formControlName="nombre" required>
+                <div *ngIf="sedeForm.get('nombre')?.invalid && (sedeForm.get('nombre')?.dirty || sedeForm.get('nombre')?.touched)"
+                    class="error-message">
+                    <div *ngIf="sedeForm.get('nombre')?.errors?.['required']">El nombre es requerido.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" formControlName="direccion" required>
+                <div *ngIf="sedeForm.get('direccion')?.invalid && (sedeForm.get('direccion')?.dirty || sedeForm.get('direccion')?.touched)"
+                    class="error-message">
+                    <div *ngIf="sedeForm.get('direccion')?.errors?.['required']">La dirección es requerida.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="imagen">Imagen:</label>
+                <input type="file" id="imagen" (change)="onFileSelected($event)" accept="image/*">
+                <div *ngIf="selectedFileError" class="error-message">
+                    {{ selectedFileError }}
+                </div>
+                <div *ngIf="imagePreview" class="image-preview">
+                    <img [src]="imagePreview" alt="Vista previa de imagen" style="max-width: 200px; margin-top: 10px;">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="sedeForm.invalid">
+                    <i class="fas fa-{{ isEditing ? 'save' : 'plus' }}"></i> {{ isEditing ? 'Actualizar' : 'Agregar' }}
+                </button>
+                <button type="button" class="btn btn-secondary" *ngIf="isEditing" (click)="resetForm()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lista de sedes en tabla -->
+    <div class="servicios-table-container">
+        <h3>Sedes Existentes</h3>
+        <div class="table-responsive">
+            <table class="servicios-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sede of paginatedSedes" [class.highlighted-row]="sede.id === highlightedRowId">
+                        <td data-label="ID">{{ sede.id }}</td>
+                        <td data-label="Imagen">
+                            <img *ngIf="sede.imagenBase64" [src]="sede.imagenBase64" alt="{{ sede.nombre }}"
+                                style="width: 50px; height: 50px; object-fit: cover;">
+                            <span *ngIf="!sede.imagenBase64">Sin imagen</span>
+                        </td>
+                        <td data-label="Nombre">{{ sede.nombre }}</td>
+                        <td data-label="Dirección">{{ sede.direccion }}</td>
+                        <td>
+                            <button class="btn btn-edit" (click)="editSede(sede)">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-delete" (click)="deleteSede(sede.id)">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p *ngIf="paginatedSedes.length === 0" class="no-servicios-message">No hay sedes disponibles.</p>
+
+        <!-- Paginación -->
+        <div class="pagination-controls" *ngIf="collectionSize > pageSize">
+            <button class="btn btn-pagination" (click)="page = page - 1; refreshSedes()" [disabled]="page === 1">
+                <i class="fas fa-chevron-left"></i> Anterior
+            </button>
+            <span>Página {{ page }} de {{ totalPages }}</span>
+            <button class="btn btn-pagination" (click)="page = page + 1; refreshSedes()"
+                [disabled]="page * pageSize >= collectionSize">
+                Siguiente <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
