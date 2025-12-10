@@ -1,17 +1,30 @@
 .services-title {
-    color: #333; /* Dark grey color for the title */
-    font-size: 2.5em; /* Larger font size */
-    font-weight: bold; /* Bold text */
-    margin-top: 1.5em; /* Top margin */
-    margin-bottom: 1em; /* Bottom margin */
-    text-transform: uppercase; /* Uppercase text */
-    letter-spacing: 2px; /* Spacing between letters */
-    border-bottom: 3px solid #007bff; /* Blue underline */
-    padding-bottom: 10px; /* Padding below the underline */
-    display: block; /* Make it a block element to apply margin auto */
-    margin-left: auto; /* Center the block element */
-    margin-right: auto; /* Center the block element */
-    width: fit-content; /* Make the width fit its content */
+	color: #333;
+	/* Dark grey color for the title */
+	font-size: 2.5em;
+	/* Larger font size */
+	font-weight: bold;
+	/* Bold text */
+	margin-top: 1.5em;
+	/* Top margin */
+	margin-bottom: 1em;
+	/* Bottom margin */
+	text-transform: uppercase;
+	/* Uppercase text */
+	letter-spacing: 2px;
+	/* Spacing between letters */
+	border-bottom: 3px solid #007bff;
+	/* Blue underline */
+	padding-bottom: 10px;
+	/* Padding below the underline */
+	display: block;
+	/* Make it a block element to apply margin auto */
+	margin-left: auto;
+	/* Center the block element */
+	margin-right: auto;
+	/* Center the block element */
+	width: fit-content;
+	/* Make the width fit its content */
 }
 
 body {

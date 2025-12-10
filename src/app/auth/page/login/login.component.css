@@ -1,0 +1,99 @@
+/* Login Component specific styles */
+/* Add any specific adjustments here if needed, but try to rely on Bootstrap classes */
+.card {
+    border: none;
+    border-radius: 1rem;
+}
+
+.card-header {
+    border-radius: 1rem 1rem 0 0 !important;
+}
+
+/* =========================================
+   RESPONSIVE STYLES
+   ========================================= */
+
+/* Mobile devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .card {
+        margin: 1rem;
+        max-width: 100% !important;
+        border-radius: 0.75rem;
+    }
+
+    .card-body {
+        padding: 1.5rem !important;
+    }
+
+    .card-header {
+        padding: 1rem !important;
+        border-radius: 0.75rem 0.75rem 0 0 !important;
+    }
+
+    .card-header h2 {
+        font-size: 1.25rem !important;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+    }
+
+    .input-group-text {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .card {
+        margin: 1.5rem;
+        max-width: 500px !important;
+    }
+
+    .card-body {
+        padding: 2rem !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .card {
+        max-width: 500px !important;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .card {
+        max-width: 550px !important;
+    }
+
+    .card-body {
+        padding: 2.5rem !important;
+    }
+
+    .card-header h2 {
+        font-size: 1.75rem !important;
+    }
+}
+
+/* Extra small height screens (landscape mobile) */
+@media (max-height: 600px) {
+    .min-vh-100 {
+        min-height: auto !important;
+        padding: 2rem 0;
+    }
+
+    .card-body {
+        padding: 1.5rem !important;
+    }
+
+    .mb-3 {
+        margin-bottom: 0.75rem !important;
+    }
+}

@@ -1,42 +1,14 @@
-body, html {
-	height: 100%;
-}
-
-/* Aumentar el tamaño del botón de toggle para dispositivos móviles */
-.navbar-toggler {
-	border-color: rgba(255, 255, 255, 0.5);
-}
-
-.navbar-toggler-icon {
-	width: 1.5em;
-	height: 1.5em;
-}
-
-/* Espaciado entre los íconos y enlaces */
-.nav-item {
-	margin-left: 10px;
-}
-
-/* Ajustar el dropdown para dispositivos móviles */
-.dropdown-menu {
-	min-width: 0.1rem;
-	text-align: center;
-}
-
-/* Ajuste para evitar que el dropdown se salga de la pantalla */
-/* .dropdown-menu {
-            left: auto;
-            right: auto;
-            transform: translateX(-50%);
-        } */
-/* todos los estilos del hero */
+/* =========================================
+   1. HERO SECTION (Banner)
+   ========================================= */
 .hero-section {
 	position: relative;
 	background-image: url('/assets/banner/principal.png');
 	background-size: cover;
 	background-position: center;
 	color: white;
-	padding: 100px 0;
+	padding: 150px 0;
+	/* Aumentado para mayor impacto */
 }
 
 .hero-section::before {
@@ -46,8 +18,8 @@ body, html {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	/* Ajusta la opacidad aquí */
+	background: rgba(0, 0, 0, 0.6);
+	/* Oscurecer un poco más para contraste */
 	z-index: 1;
 }
 
@@ -57,138 +29,283 @@ body, html {
 }
 
 .hero-section h1 {
-	font-size: 3rem;
-	font-weight: 700;
+	font-size: 3.5rem;
+	font-weight: 800;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-section p {
-	font-size: 1.5rem;
-	font-weight: 300;
+	font-size: 1.25rem;
+	font-weight: 400;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.hero-section a {
-	font-size: 1.5rem;
-	font-weight: 700;
+/* =========================================
+   2. WHATSAPP BUTTON
+   ========================================= */
+.whatsapp-float {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 9999;
+	transition: transform 0.3s ease;
+	filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
 }
 
-.info-box {
-	background: rgba(0, 0, 0, 0.6);
+.whatsapp-float:hover {
+	transform: scale(1.1);
+}
+
+.whatsapp-float img {
+	width: 60px;
+	height: 60px;
+}
+
+/* =========================================
+   3. UTILITIES & NEW THEME
+   ========================================= */
+
+/* Efecto Hover para Tarjetas de Servicios */
+.hover-shadow {
+	transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+/* Transiciones Suaves */
+.transition-all {
+	transition: all 0.3s ease;
+}
+
+/* Botón Negro Personalizado (Black Accent) */
+.btn-black {
+	background-color: black;
 	color: white;
-	padding: 20px;
-	border-radius: 5px;
+	border: 1px solid black;
+	font-weight: 600;
+	padding: 0.75rem 1.5rem;
+	transition: all 0.3s ease;
 }
 
-.card-img-top {
-	max-height: 150px;
-	object-fit: cover;
+.btn-black:hover {
+	background-color: #333;
+	/* Dark Gray on hover */
+	border-color: #333;
+	color: white;
+	transform: translateY(-2px);
 }
 
-iframe {
+/* Bootstrap Overrides (if needed) */
+.text-black {
+	color: black !important;
+}
+
+.bg-black {
+	background-color: black !important;
+}
+
+/* =========================================
+   4. RESPONSIVE MAP CONTAINER
+   ========================================= */
+.map-container {
+	position: relative;
+	width: 100%;
+	padding-bottom: 75%;
+	/* 4:3 Aspect Ratio */
+	height: 0;
+	overflow: hidden;
+}
+
+.map-container iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 }
 
-/* -------------------------------------- */
-/* Estilos para el logo de WhatsApp flotante */
-.whatsapp-float {
-	position: fixed;
-	bottom: 20px;
-	/* Ajusta la distancia desde la parte inferior */
-	right: 20px;
-	/* Ajusta la distancia desde la parte derecha */
-	z-index: 9999;
-	/* Asegura que esté encima de otros elementos */
-	animation: float 2s ease-in-out infinite;
-}
-
-.whatsapp-float img {
-	width: 50px;
-	/* Ajusta el tamaño del logo según sea necesario */
-	height: auto;
-}
-
-@keyframes float {
-	0% {
-		transform: translateY(0);
-	}
-
-	50% {
-	transform:translateY(-10px);
-	}
-	100% {
-	transform:translateY(0);
+/* Responsive adjustments */
+@media (min-width: 992px) {
+	.map-container {
+		padding-bottom: 56.25%;
+		/* 16:9 Aspect Ratio for larger screens */
+		min-height: 450px;
 	}
 }
-footer {
-	position: relative;
-	bottom: 0;
-	width: 100%;
+
+@media (max-width: 991px) {
+	.map-container {
+		padding-bottom: 75%;
+		/* 4:3 for tablets */
+		min-height: 350px;
+	}
 }
 
-/* -------------------------------------- */
-@media ( max-width : 912px) {
-	/* estilos del hero */
+@media (max-width: 576px) {
+	.map-container {
+		padding-bottom: 100%;
+		/* 1:1 for mobile */
+		min-height: 300px;
+	}
+}
+
+/* =========================================
+   5. RESPONSIVE DESIGN - MAIN PAGE
+   ========================================= */
+
+/* Mobile devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+
+	/* Hero Section */
 	.hero-section {
-		padding: 50px 0;
-		text-align: center;
+		padding: 80px 0 !important;
 	}
+
 	.hero-section h1 {
-		font-size: 2.5rem;
+		font-size: 2rem !important;
+		line-height: 1.2;
 	}
+
 	.hero-section p {
-		font-size: 1rem;
+		font-size: 1rem !important;
 	}
-	.hero-section a {
-		font-size: 1rem;
+
+	/* Buttons */
+	.btn-lg {
+		padding: 0.75rem 1.25rem;
+		font-size: 0.95rem;
 	}
-	.center {
-		text-align: center;
+
+	.d-flex.gap-3 {
+		flex-direction: column !important;
+		gap: 0.75rem !important;
 	}
-	.info-box {
-		margin-bottom: 20px;
+
+	.d-flex.gap-3 .btn {
+		width: 100%;
 	}
-	.card-img-top {
-		max-height: 150px;
-		object-fit: cover;
+
+	/* Feature Icons */
+	.feature-icon {
+		width: 50px !important;
+		height: 50px !important;
+	}
+
+	.feature-icon i {
+		font-size: 1.25rem !important;
+	}
+
+	/* Section Headings */
+	.display-6 {
+		font-size: 1.75rem !important;
+	}
+
+	.fs-4 {
+		font-size: 1.1rem !important;
+	}
+
+	/* Service Cards */
+	.card-body {
+		padding: 1.5rem !important;
+	}
+
+	/* Contact Section */
+	.col-lg-5,
+	.col-lg-7 {
+		margin-bottom: 2rem;
+	}
+
+	/* WhatsApp Button */
+	.whatsapp-float img {
+		width: 50px;
+		height: 50px;
 	}
 }
 
-@media ( max-width : 350px) {
-	.card-img-top {
-		max-height: 500px;
-		font-size: 0.5rem;
-		object-fit: cover;
+/* Small devices (landscape phones, 576px - 767px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+	.hero-section {
+		padding: 100px 0 !important;
+	}
+
+	.hero-section h1 {
+		font-size: 2.5rem !important;
+	}
+
+	.hero-section p {
+		font-size: 1.1rem !important;
+	}
+
+	.display-6 {
+		font-size: 2rem !important;
 	}
 }
 
-.informacion {
-	background-color: white;
-	padding: 20px;
-	border-radius: 5px;
-	max-width: 400px;
-	margin: 50px auto;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* Medium devices (tablets, 768px - 991px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+	.hero-section {
+		padding: 120px 0 !important;
+	}
+
+	.hero-section h1 {
+		font-size: 2.75rem !important;
+	}
+
+	.hero-section p {
+		font-size: 1.15rem !important;
+	}
+
+	.display-6 {
+		font-size: 2.25rem !important;
+	}
+
+	/* Adjust button group */
+	.d-flex.gap-3 {
+		gap: 1rem !important;
+	}
 }
 
-.section-title {
-	font-weight: bold;
-	color: black;
-	margin-bottom: 10px;
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	.hero-section {
+		padding: 150px 0 !important;
+	}
+
+	.hero-section h1 {
+		font-size: 3.5rem !important;
+	}
+
+	.card-body {
+		padding: 2rem !important;
+	}
 }
 
-.section-title span {
-	color: #007bff;
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	.container {
+		max-width: 1140px;
+	}
+
+	.hero-section h1 {
+		font-size: 3.75rem !important;
+	}
+
+	.hero-section p {
+		font-size: 1.35rem !important;
+	}
 }
 
-.ubicacion, .horas {
-	margin-bottom: 20px;
-}
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+	.hero-section {
+		padding: 60px 0 !important;
+	}
 
-.ubicacion i, .horas i {
-	color: #007bff;
-	margin-right: 10px;
-}
-
-.horas p {
-	margin: 0;
+	.py-5 {
+		padding-top: 2rem !important;
+		padding-bottom: 2rem !important;
+	}
 }

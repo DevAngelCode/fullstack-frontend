@@ -1,0 +1,266 @@
+<div class="container py-5">
+    <!-- Progress Indicator -->
+    <div class="progress-container mb-5">
+        <div class="row text-center">
+            <div class="col" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+                <div class="step-circle">
+                    <i class="fa-solid fa-wrench"></i>
+                </div>
+                <p class="step-label">Servicio</p>
+            </div>
+            <div class="col" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+                <div class="step-circle">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <p class="step-label">Sede</p>
+            </div>
+            <div class="col" [class.active]="currentStep >= 3" [class.completed]="currentStep > 3">
+                <div class="step-circle">
+                    <i class="fa-solid fa-user-gear"></i>
+                </div>
+                <p class="step-label">Técnico</p>
+            </div>
+            <div class="col" [class.active]="currentStep >= 4" [class.completed]="currentStep > 4">
+                <div class="step-circle">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <p class="step-label">Fecha/Hora</p>
+            </div>
+            <div class="col" [class.active]="currentStep >= 5">
+                <div class="step-circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <p class="step-label">Confirmar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+    </div>
+
+    <!-- Step 1: Select Service -->
+    <div *ngIf="currentStep === 1 && !loading" class="step-content">
+        <h2 class="text-center fw-bold mb-4">Selecciona un Servicio</h2>
+        <div class="row g-4">
+            <div *ngFor="let servicio of servicios" class="col-md-6 col-lg-4">
+                <div class="card service-card h-100 border-0 shadow-sm"
+                    [class.selected]="selectedServicio?.id === servicio.id" (click)="selectServicio(servicio)">
+                    <img *ngIf="servicio.imagenBase64" [src]="servicio.imagenBase64" class="card-img-top"
+                        alt="{{servicio.nombre}}">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ servicio.nombre }}</h5>
+                        <p class="card-text text-muted">{{ servicio.descripcion }}</p>
+                        <p class="price fw-bold text-dark">S/. {{ servicio.precio }}</p>
+                    </div>
+                    <div *ngIf="selectedServicio?.id === servicio.id" class="selected-badge">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Select Location -->
+    <div *ngIf="currentStep === 2 && !loading" class="step-content">
+        <h2 class="text-center fw-bold mb-4">Selecciona una Sede</h2>
+        <div class="row g-4">
+            <div *ngFor="let sede of sedes" class="col-md-6 col-lg-4">
+                <div class="card sede-card h-100 border-0 shadow-sm" [class.selected]="selectedSede?.id === sede.id"
+                    (click)="selectSede(sede)">
+                    <img *ngIf="sede.imagenBase64" [src]="sede.imagenBase64" class="card-img-top" alt="{{sede.nombre}}">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ sede.nombre }}</h5>
+                        <p class="card-text text-muted">
+                            <i class="fa-solid fa-location-dot me-2"></i>{{ sede.direccion }}
+                        </p>
+                    </div>
+                    <div *ngIf="selectedSede?.id === sede.id" class="selected-badge">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Select Technician -->
+    <div *ngIf="currentStep === 3 && !loading" class="step-content">
+        <h2 class="text-center fw-bold mb-4">Selecciona un Técnico</h2>
+        <div *ngIf="tecnicos.length === 0" class="alert alert-warning text-center">
+            No hay técnicos disponibles para este servicio en esta sede.
+        </div>
+        <div class="row g-4">
+            <div *ngFor="let tecnico of tecnicos" class="col-md-6 col-lg-4">
+                <div class="card tecnico-card h-100 border-0 shadow-sm"
+                    [class.selected]="selectedTecnico?.id === tecnico.id" (click)="selectTecnico(tecnico)">
+                    <div class="card-body text-center">
+                        <div class="tecnico-icon mb-3">
+                            <i class="fa-solid fa-user-gear fa-3x text-dark"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">{{ tecnico.nombreCompleto }}</h5>
+                        <p class="card-text text-muted">
+                            <i class="fa-solid fa-wrench me-2"></i>Técnico Especializado
+                        </p>
+                    </div>
+                    <div *ngIf="selectedTecnico?.id === tecnico.id" class="selected-badge">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 4: Select Date and Time -->
+    <div *ngIf="currentStep === 4 && !loading" class="step-content">
+        <h2 class="text-center fw-bold mb-4">Selecciona Fecha y Hora</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <!-- Date Picker -->
+                <div class="mb-4">
+                    <label for="fecha" class="form-label fw-bold">Fecha</label>
+                    <input type="date" id="fecha" class="form-control form-control-lg" [(ngModel)]="selectedFecha"
+                        [min]="minDate" (change)="onFechaChange()">
+                </div>
+
+                <!-- Available Time Slots -->
+                <div *ngIf="selectedFecha && horariosDisponibles.length > 0">
+                    <label class="form-label fw-bold">Horarios Disponibles</label>
+                    <div class="row g-3">
+                        <div *ngFor="let horario of horariosDisponibles" class="col-6 col-md-4">
+                            <div class="time-slot"
+                                [class.selected]="selectedHorario?.tecnicoId === horario.tecnicoId && selectedHorario?.hora === horario.hora"
+                                (click)="selectHorario(horario)">
+                                <div class="time">{{ formatTime(horario.hora) }}</div>
+                                <div class="technician">{{ horario.tecnicoNombre }} {{ horario.tecnicoApellido }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedFecha && horariosDisponibles.length === 0 && !loading"
+                    class="alert alert-warning mt-3">
+                    No hay horarios disponibles para esta fecha. Por favor selecciona otra fecha.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 5: Confirmation -->
+    <div *ngIf="currentStep === 5 && !loading" class="step-content">
+        <h2 class="text-center fw-bold mb-4">Confirmar Cita</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">Resumen de tu Cita</h5>
+
+                        <div class="summary-item">
+                            <i class="fa-solid fa-wrench text-dark me-3"></i>
+                            <div>
+                                <strong>Servicio:</strong>
+                                <p class="mb-0">{{ selectedServicio?.nombre }}</p>
+                            </div>
+                        </div>
+
+                        <div class="summary-item">
+                            <i class="fa-solid fa-location-dot text-dark me-3"></i>
+                            <div>
+                                <strong>Sede:</strong>
+                                <p class="mb-0">{{ selectedSede?.nombre }}</p>
+                                <small class="text-muted">{{ selectedSede?.direccion }}</small>
+                            </div>
+                        </div>
+
+                        <div class="summary-item">
+                            <i class="fa-solid fa-user-gear text-dark me-3"></i>
+                            <div>
+                                <strong>Técnico:</strong>
+                                <p class="mb-0">{{ selectedTecnico?.nombreCompleto }}</p>
+                            </div>
+                        </div>
+
+                        <div class="summary-item">
+                            <i class="fa-solid fa-calendar-days text-dark me-3"></i>
+                            <div>
+                                <strong>Fecha:</strong>
+                                <p class="mb-0">{{ selectedFecha }}</p>
+                            </div>
+                        </div>
+
+                        <div class="summary-item">
+                            <i class="fa-solid fa-clock text-dark me-3"></i>
+                            <div>
+                                <strong>Hora:</strong>
+                                <p class="mb-0">{{ selectedHorario?.hora }}</p>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedServicio?.precio" class="summary-item">
+                            <i class="fa-solid fa-dollar-sign text-dark me-3"></i>
+                            <div>
+                                <strong>Precio:</strong>
+                                <p class="mb-0">S/. {{ selectedServicio?.precio }}</p>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Notes -->
+                        <div class="mb-3">
+                            <label for="notas" class="form-label fw-bold">Notas adicionales (opcional)</label>
+                            <textarea id="notas" class="form-control" rows="3" [(ngModel)]="notas"
+                                placeholder="Agrega cualquier información adicional sobre tu vehículo o el servicio..."></textarea>
+                        </div>
+
+                        <!-- Login Warning -->
+                        <div *ngIf="!isLoggedIn()" class="alert alert-info">
+                            <i class="fa-solid fa-info-circle me-2"></i>
+                            Necesitas iniciar sesión para confirmar tu cita. Serás redirigido a la página de login.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation-buttons mt-5" *ngIf="!loading">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="d-flex justify-content-between gap-3">
+                    <button *ngIf="currentStep > 1" class="btn btn-outline-dark btn-lg" (click)="previousStep()">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Atrás
+                    </button>
+
+                    <button *ngIf="currentStep < 5" class="btn btn-dark btn-lg ms-auto" [disabled]="(currentStep === 1 && !selectedServicio) || 
+                                        (currentStep === 2 && !selectedSede) || 
+                                        (currentStep === 3 && !selectedTecnico) ||
+                                        (currentStep === 4 && !selectedHorario)" (click)="nextStep()">
+                        Siguiente<i class="fa-solid fa-arrow-right ms-2"></i>
+                    </button>
+
+                    <button *ngIf="currentStep === 5" class="btn btn-dark btn-lg ms-auto" (click)="confirmarCita()">
+                        <i class="fa-solid fa-check me-2"></i>Confirmar Cita
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

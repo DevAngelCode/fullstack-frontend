@@ -1,11 +1,5 @@
-.footer {
-  background-color: #212529; /* Dark background color */
-  color: #ffffff; /* White text color */
-  padding: 20px 0; /* Vertical padding */
-  text-align: center; /* Center align text */
-  border-top: 1px solid #343a40; /* Subtle top border */
-}
-
-.footer span {
-  font-size: 0.9rem; /* Slightly smaller font size */
+/* Footer specific styles */
+footer {
+  position: relative;
+  z-index: 10;
 }

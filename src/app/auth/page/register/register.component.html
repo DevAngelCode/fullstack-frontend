@@ -1,55 +1,92 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card shadow-lg p-4">
-        <div class="card-header bg-primary text-white text-center py-3 rounded-top">
-          <h2 class="h3 mb-0">Registrarse</h2>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="registerForm" (ngSubmit)="register()">
-            <div class="mb-3">
-              <label for="username" class="form-label">Nombre de Usuario</label>
-              <input type="text" id="username" formControlName="username" class="form-control"
-                     [class.is-invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
-                     placeholder="Ingresa tu nombre de usuario">
-              <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="invalid-feedback">
-                El nombre de usuario es requerido.
-              </div>
+<div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+  <div class="card shadow-lg p-0" style="max-width: 450px; width: 100%;">
+    <div class="card-header bg-black text-white text-center py-3">
+      <h2 class="h3 mb-0 text-uppercase fw-bold"><i class="fa-solid fa-screwdriver-wrench me-2"></i>Registrarse</h2>
+    </div>
+    <div class="card-body p-4">
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <div class="mb-3">
+          <label for="username" class="form-label text-secondary fw-bold">Nombre de Usuario</label>
+          <div class="input-group">
+            <span class="input-group-text bg-dark text-white"><i class="fa-solid fa-user"></i></span>
+            <input type="text" id="username" formControlName="username" class="form-control"
+              [class.is-invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+              placeholder="Ingresa tu usuario">
+            <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+              class="invalid-feedback">
+              El nombre de usuario es requerido.
             </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Correo Electrónico</label>
-              <input type="email" id="email" formControlName="email" class="form-control"
-                     [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-                     placeholder="Ingresa tu correo electrónico">
-              <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="invalid-feedback">
-                <span *ngIf="registerForm.get('email')?.errors?.['required']">El correo electrónico es requerido.</span>
-                <span *ngIf="registerForm.get('email')?.errors?.['email']">Por favor, introduce un correo electrónico válido.</span>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Contraseña</label>
-              <input type="password" id="password" formControlName="password" class="form-control"
-                     [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-                     placeholder="Ingresa tu contraseña">
-              <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="invalid-feedback">
-                <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es requerida.</span>
-                <span *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</span>
-              </div>
-            </div>
-            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-              {{ errorMessage }}
-            </div>
-            <div *ngIf="successMessage" class="alert alert-success mt-3">
-              {{ successMessage }}
-            </div>
-            <div class="d-grid">
-              <button type="submit" class="btn btn-primary btn-lg mt-3" [disabled]="registerForm.invalid">Registrarse</button>
-            </div>
-          </form>
-          <div class="mt-3 text-center">
-            <p>¿Ya tienes una cuenta? <a routerLink="/auth/login">Inicia Sesión aquí</a></p>
           </div>
         </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label text-secondary fw-bold">Correo Electrónico</label>
+          <div class="input-group">
+            <span class="input-group-text bg-dark text-white"><i class="fa-solid fa-envelope"></i></span>
+            <input type="email" id="email" formControlName="email" class="form-control"
+              [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+              placeholder="Ingresa tu correo">
+            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+              class="invalid-feedback">
+              <span *ngIf="registerForm.get('email')?.errors?.['required']">El correo es requerido.</span>
+              <span *ngIf="registerForm.get('email')?.errors?.['email']">Correo inválido.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label text-secondary fw-bold">Contraseña</label>
+          <div class="input-group">
+            <span class="input-group-text bg-dark text-white"><i class="fa-solid fa-lock"></i></span>
+            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+              class="form-control"
+              [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+              placeholder="Contraseña">
+            <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+              <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+            </button>
+            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+              class="invalid-feedback">
+              <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es requerida.</span>
+              <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label text-secondary fw-bold">Confirmar Contraseña</label>
+          <div class="input-group">
+            <span class="input-group-text bg-dark text-white"><i class="fa-solid fa-lock"></i></span>
+            <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+              formControlName="confirmPassword" class="form-control"
+              [class.is-invalid]="(registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) || registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched"
+              placeholder="Repite tu contraseña">
+            <button class="btn btn-outline-secondary" type="button" (click)="toggleConfirmPasswordVisibility()">
+              <i class="fa-solid" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword"></i>
+            </button>
+            <div *ngIf="registerForm.get('confirmPassword')?.touched" class="invalid-feedback">
+              <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirma tu contraseña.</span>
+              <span *ngIf="registerForm.errors?.['passwordMismatch']">Las contraseñas no coinciden.</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success mt-3">
+          {{ successMessage }}
+        </div>
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-dark btn-lg fw-bold"
+            [disabled]="registerForm.invalid">REGISTRARSE</button>
+        </div>
+      </form>
+      <div class="mt-3 text-center">
+        <p class="text-muted">¿Ya tienes cuenta? <a routerLink="/auth/login"
+            class="text-dark text-decoration-none fw-bold">Login aquí</a></p>
       </div>
     </div>
   </div>

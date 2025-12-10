@@ -1,0 +1,154 @@
+<div class="container py-5">
+    <h1 class="fw-bold mb-4">Mis Citas</h1>
+
+    <!-- Filter Tabs -->
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="showingCurrent" (click)="showCurrent()" style="cursor: pointer;">
+                <i class="fa-solid fa-calendar-days me-2"></i>Citas Actuales
+                <span class="badge bg-dark ms-2">{{ citasActuales.length }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="!showingCurrent" (click)="showPast()" style="cursor: pointer;">
+                <i class="fa-solid fa-clock-rotate-left me-2"></i>Historial
+                <span class="badge bg-secondary ms-2">{{ citasPasadas.length }}</span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+    </div>
+
+    <!-- Current Appointments -->
+    <div *ngIf="showingCurrent && !loading">
+        <div *ngIf="citasActuales.length === 0" class="alert alert-info">
+            <i class="fa-solid fa-info-circle me-2"></i>
+            No tienes citas programadas. <a routerLink="/generar-cita" class="alert-link">Agenda una cita ahora</a>
+        </div>
+
+        <div class="row g-4">
+            <div *ngFor="let cita of citasActuales" class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm appointment-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title fw-bold mb-0">{{ cita.servicioNombre }}</h5>
+                            <span class="badge" [ngClass]="getEstadoBadgeClass(cita.estado)">
+                                {{ cita.estado }}
+                            </span>
+                        </div>
+
+                        <div class="appointment-details">
+                            <div class="detail-item">
+                                <i class="fa-solid fa-calendar-days text-dark me-2"></i>
+                                <span>{{ formatDate(cita.fecha) }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-clock text-dark me-2"></i>
+                                <span>{{ formatTime(cita.hora) }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-location-dot text-dark me-2"></i>
+                                <span>{{ cita.sedeNombre }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-user-gear text-dark me-2"></i>
+                                <span>{{ cita.tecnicoNombre }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-dollar-sign text-dark me-2"></i>
+                                <span>S/. {{ cita.servicioPrecio }}</span>
+                            </div>
+
+                            <div *ngIf="cita.notas" class="detail-item">
+                                <i class="fa-solid fa-note-sticky text-dark me-2"></i>
+                                <span class="text-muted">{{ cita.notas }}</span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="canCancel(cita)" class="mt-3">
+                            <button class="btn btn-outline-danger btn-sm w-100" (click)="cancelarCita(cita)">
+                                <i class="fa-solid fa-times me-2"></i>Cancelar Cita
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Past Appointments -->
+    <div *ngIf="!showingCurrent && !loading">
+        <div *ngIf="citasPasadas.length === 0" class="alert alert-info">
+            <i class="fa-solid fa-info-circle me-2"></i>
+            No tienes citas en el historial.
+        </div>
+
+        <div class="row g-4">
+            <div *ngFor="let cita of citasPasadas" class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm appointment-card past-appointment">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title fw-bold mb-0">{{ cita.servicioNombre }}</h5>
+                            <span class="badge" [ngClass]="getEstadoBadgeClass(cita.estado)">
+                                {{ cita.estado }}
+                            </span>
+                        </div>
+
+                        <div class="appointment-details">
+                            <div class="detail-item">
+                                <i class="fa-solid fa-calendar-days text-muted me-2"></i>
+                                <span class="text-muted">{{ formatDate(cita.fecha) }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-clock text-muted me-2"></i>
+                                <span class="text-muted">{{ formatTime(cita.hora) }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-location-dot text-muted me-2"></i>
+                                <span class="text-muted">{{ cita.sedeNombre }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-user-gear text-muted me-2"></i>
+                                <span class="text-muted">{{ cita.tecnicoNombre }}</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <i class="fa-solid fa-dollar-sign text-muted me-2"></i>
+                                <span class="text-muted">S/. {{ cita.servicioPrecio }}</span>
+                            </div>
+
+                            <div *ngIf="cita.notas" class="detail-item">
+                                <i class="fa-solid fa-note-sticky text-muted me-2"></i>
+                                <span class="text-muted small">{{ cita.notas }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

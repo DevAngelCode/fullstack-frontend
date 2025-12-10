@@ -15,18 +15,23 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       usernameOrEmail: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   login(): void {
@@ -36,7 +41,14 @@ export class LoginComponent implements OnInit {
       this.authService.login(loginRequest).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          this.router.navigate(['/']); // Navigate to home or dashboard
+
+          if (this.authService.hasRole('ROLE_ADMIN')) {
+            this.router.navigate(['/admin/dashboard']);
+          } else if (this.authService.hasRole('ROLE_TECNICO')) {
+            this.router.navigate(['/tecnico/dashboard']);
+          } else {
+            this.router.navigate(['/']); // Navigate to home for clients/others
+          }
         },
         error: (error) => {
           this.errorMessage = 'Error al iniciar sesión. Verifica tus credenciales.';

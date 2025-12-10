@@ -1,8 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: black;">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center" routerLink="/">
-      <img src="/assets/logo-mechanic.png" alt="Mechanic Logo" class="h-10 d-inline-block align-text-top me-2"
-        style="height: 40px;">
+    <a class="navbar-brand d-flex align-items-center fw-bold text-uppercase" routerLink="/">
+      <i class="fa-solid fa-car-side fa-lg me-2 text-light"></i>
       Auto Pro
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -10,47 +9,82 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <!-- Public Links (always visible) -->
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/">Inicio</a>
-        </li>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+
+        <!-- Public Links (visible only if NOT admin or tecnico) -->
+        <ng-container *ngIf="!hasRole('ROLE_ADMIN') && !hasRole('ROLE_TECNICO')">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+              <i class="fa-solid fa-house me-1"></i> Inicio
+            </a>
+          </li>
+        </ng-container>
 
         <!-- Links for Authenticated Users -->
         <ng-container *ngIf="isLoggedIn">
           <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
-            <a class="nav-link" routerLink="/admin/dashboard">Admin Dashboard</a>
+            <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">
+              <i class="fa-solid fa-gauge me-1"></i> Admin Dashboard
+            </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
-            <a class="nav-link" routerLink="/admin/profile">Admin Perfil</a>
+            <a class="nav-link" routerLink="/admin/profile" routerLinkActive="active">
+              <i class="fa-solid fa-user-tie me-1"></i> Perfil
+            </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
-            <a class="nav-link" routerLink="/admin/servicios">Servicios</a>
+            <a class="nav-link" routerLink="/admin/servicios" routerLinkActive="active">
+              <i class="fa-solid fa-screwdriver-wrench me-1"></i> Servicios
+            </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
-            <a class="nav-link" routerLink="/admin/sedes">Sedes</a>
+            <a class="nav-link" routerLink="/admin/sedes" routerLinkActive="active">
+              <i class="fa-solid fa-building me-1"></i> Sedes
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
+            <a class="nav-link" routerLink="/admin/usuarios" routerLinkActive="active">
+              <i class="fa-solid fa-users me-1"></i> Usuarios
+            </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_CLIENTE')">
-            <a class="nav-link" routerLink="/cliente/profile">Mi Perfil</a>
+            <a class="nav-link" routerLink="/cliente/profile" routerLinkActive="active">
+              <i class="fa-solid fa-user me-1"></i> Mi Perfil
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole('ROLE_CLIENTE')">
+            <a class="nav-link" routerLink="/cliente/citas" routerLinkActive="active">
+              <i class="fa-solid fa-calendar-check me-1"></i> Mis Citas
+            </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_TECNICO')">
-            <a class="nav-link" routerLink="/tecnico/dashboard">Tecnico Dashboard</a>
+            <a class="nav-link" routerLink="/tecnico/dashboard" routerLinkActive="active">
+              <i class="fa-solid fa-clipboard-list me-1"></i> Dashboard
+            </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_TECNICO')">
-            <a class="nav-link" routerLink="/tecnico/profile">Tecnico Perfil</a>
+            <a class="nav-link" routerLink="/tecnico/profile" routerLinkActive="active">
+              <i class="fa-solid fa-user-gear me-1"></i> Perfil
+            </a>
           </li>
-          <li class="nav-item">
-            <button (click)="logout()" class="btn btn-danger ms-lg-3">Cerrar Sesión</button>
+          <li class="nav-item ms-lg-2">
+            <button (click)="logout()" class="btn btn-danger btn-sm">
+              <i class="fa-solid fa-right-from-bracket me-1"></i> Cerrar Sesión
+            </button>
           </li>
         </ng-container>
 
         <!-- Links for Non-Authenticated Users -->
         <ng-container *ngIf="!isLoggedIn">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/auth/login">Iniciar Sesión</a>
+            <a class="nav-link" routerLink="/auth/login" routerLinkActive="active">
+              <i class="fa-solid fa-right-to-bracket me-1"></i> Iniciar Sesión
+            </a>
           </li>
-          <li class="nav-item">
-            <a class="btn btn-primary ms-lg-3" routerLink="/auth/register">Registrarse</a>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-light text-primary fw-bold btn-sm" routerLink="/auth/register" routerLinkActive="active">
+              <i class="fa-solid fa-user-plus me-1"></i> Registrarse
+            </a>
           </li>
         </ng-container>
       </ul>

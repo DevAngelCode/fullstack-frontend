@@ -13,11 +13,17 @@ import { ServiciosComponent } from './public/pages/servicios/servicios.component
 import { DetalleServicioComponent } from './public/pages/detalle-servicio/detalle-servicio.component';
 import { ServiciosComponent as AdminServiciosComponent } from './admin/servicios/servicios.component'; // Import Admin ServiciosComponent
 import { SedesComponent } from './admin/sedes/sedes.component'; // Import Admin SedesComponent
+import { GenerarCitaComponent } from './public/pages/generar-cita/generar-cita.component'; // Import GenerarCitaComponent
+
+import { MisCitasComponent } from './cliente/mis-citas/mis-citas.component'; // Import MisCitasComponent
+
+import { UsuariosComponent } from './admin/usuarios/usuarios.component'; // Import UsuariosComponent
 
 export const routes: Routes = [
   { path: '', component: PaginaPrincipalComponent }, // Public home page
   { path: 'servicios', component: ServiciosComponent }, // Public services page
   { path: 'servicios/:id', component: DetalleServicioComponent }, // Public service detail page
+  { path: 'generar-cita', component: GenerarCitaComponent }, // Public appointment booking page
   { path: 'auth/login', component: LoginComponent, canActivate: [publicGuard] }, // Apply publicGuard
   { path: 'auth/register', component: RegisterComponent, canActivate: [publicGuard] }, // Apply publicGuard
   {
@@ -29,6 +35,7 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent }, // Admin profile route
       { path: 'servicios', component: AdminServiciosComponent }, // Admin services route
       { path: 'sedes', component: SedesComponent }, // Admin sedes route
+      { path: 'usuarios', component: UsuariosComponent }, // Admin users route
       { path: '**', redirectTo: 'dashboard' }
     ]
   },
@@ -39,6 +46,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: PaginaPrincipalComponent }, // Client's main page is the public home
       { path: 'profile', component: ProfileComponent }, // Client profile route
+      { path: 'citas', component: MisCitasComponent }, // Client appointments route
       { path: '**', redirectTo: '' }
     ]
   },

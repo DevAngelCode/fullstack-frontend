@@ -1,0 +1,12 @@
+/* Navbar specific overrides */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    transform: translateY(-1px);
+}

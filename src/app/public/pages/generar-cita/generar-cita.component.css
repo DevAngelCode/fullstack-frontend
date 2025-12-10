@@ -1,0 +1,316 @@
+/* =========================================
+   PROGRESS INDICATOR
+   ========================================= */
+.progress-container {
+    position: relative;
+}
+
+.progress-container::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 2px;
+    background: #dee2e6;
+    z-index: 0;
+}
+
+.step-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.active .step-circle {
+    background: black;
+    color: white;
+}
+
+.completed .step-circle {
+    background: #198754;
+    color: white;
+}
+
+.step-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6c757d;
+    margin: 0;
+}
+
+.active .step-label,
+.completed .step-label {
+    color: black;
+}
+
+/* =========================================
+   SERVICE & LOCATION CARDS
+   ========================================= */
+.service-card,
+.sede-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card:hover,
+.sede-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.service-card.selected,
+.sede-card.selected {
+    border: 2px solid black !important;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.service-card img,
+.sede-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.selected-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: black;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sede-card.selected .selected-badge {
+    display: flex;
+}
+
+/* =========================================
+   TECNICO CARDS
+   ========================================= */
+.tecnico-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tecnico-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.tecnico-card.selected {
+    border: 3px solid black !important;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.2) !important;
+}
+
+.tecnico-card .selected-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: black;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.tecnico-card.selected .selected-badge {
+    display: flex;
+}
+
+.tecnico-icon {
+    padding: 1rem;
+}
+
+.price {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* =========================================
+   TIME SLOTS
+   ========================================= */
+.time-slot {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-slot:hover {
+    border-color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.time-slot.selected {
+    background: black;
+    border-color: black;
+    color: white;
+}
+
+.time-slot .time {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.time-slot .technician {
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+/* =========================================
+   SUMMARY ITEMS
+   ========================================= */
+.summary-item {
+    display: flex;
+    align-items: start;
+    padding: 1rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.summary-item:last-of-type {
+    border-bottom: none;
+}
+
+.summary-item i {
+    font-size: 1.5rem;
+    min-width: 40px;
+}
+
+.summary-item strong {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+/* Mobile devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .progress-container::before {
+        display: none;
+    }
+
+    .step-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    .step-label {
+        font-size: 0.75rem;
+    }
+
+    .service-card img,
+    .sede-card img {
+        height: 150px;
+    }
+
+    .price {
+        font-size: 1.25rem;
+    }
+
+    .time-slot {
+        padding: 0.75rem;
+    }
+
+    .time-slot .time {
+        font-size: 1rem;
+    }
+
+    .time-slot .technician {
+        font-size: 0.75rem;
+    }
+
+    .summary-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .summary-item i {
+        margin-bottom: 0.5rem;
+    }
+
+    .navigation-buttons .d-flex {
+        flex-direction: column !important;
+    }
+
+    .navigation-buttons .btn {
+        width: 100%;
+    }
+
+    .navigation-buttons .ms-auto {
+        margin-left: 0 !important;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .step-circle {
+        width: 55px;
+        height: 55px;
+    }
+
+    .service-card img,
+    .sede-card img {
+        height: 180px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+    .service-card img,
+    .sede-card img {
+        height: 200px;
+    }
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+.step-content {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
