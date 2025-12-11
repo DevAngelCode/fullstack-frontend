@@ -27,6 +27,7 @@
                     <select class="form-select" [(ngModel)]="filterEstado" (change)="applyFilters()">
                         <option value="">Todos</option>
                         <option value="PENDIENTE">Pendiente</option>
+                        <option value="CONFIRMADA">Confirmada</option>
                         <option value="COMPLETADA">Completada</option>
                         <option value="CANCELADA">Cancelada</option>
                     </select>
@@ -89,16 +90,29 @@
                                     title="Ver Detalle">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
+
                                 <ng-container *ngIf="cita.estado === 'PENDIENTE'">
-                                    <button class="btn btn-sm btn-success me-1"
-                                        (click)="cambiarEstado(cita.id, 'COMPLETADA')" title="Completar">
-                                        <i class="fa-solid fa-check"></i>
+                                    <button class="btn btn-sm btn-info me-1"
+                                        (click)="cambiarEstado(cita.id, 'CONFIRMADA')" title="Confirmar">
+                                        <i class="fa-solid fa-calendar-check"></i>
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger"
                                         (click)="cambiarEstado(cita.id, 'CANCELADA')" title="Cancelar">
                                         <i class="fa-solid fa-xmark"></i>
                                     </button>
                                 </ng-container>
+
+                                <ng-container *ngIf="cita.estado === 'CONFIRMADA'">
+                                    <button class="btn btn-sm btn-success me-1"
+                                        (click)="cambiarEstado(cita.id, 'COMPLETADA')" title="Completar">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </ng-container>
+
+                                <button class="btn btn-sm btn-outline-dark ms-1" (click)="downloadRecibo(cita.id)"
+                                    title="Descargar Recibo">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -149,10 +163,19 @@
                 </div>
             </div>
             <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-dark me-auto" (click)="downloadRecibo(selectedCita.id)">
+                    <i class="fa-solid fa-file-pdf me-2"></i>Recibo
+                </button>
                 <button type="button" class="btn btn-secondary" (click)="closeDetalle()">Cerrar</button>
+
                 <ng-container *ngIf="selectedCita.estado === 'PENDIENTE'">
+                    <button type="button" class="btn btn-info"
+                        (click)="cambiarEstado(selectedCita.id, 'CONFIRMADA')">Confirmar Cita</button>
+                </ng-container>
+
+                <ng-container *ngIf="selectedCita.estado === 'CONFIRMADA'">
                     <button type="button" class="btn btn-success"
-                        (click)="cambiarEstado(selectedCita.id, 'COMPLETADA')">Realizada</button>
+                        (click)="cambiarEstado(selectedCita.id, 'COMPLETADA')">Completar Cita</button>
                 </ng-container>
             </div>
         </div>

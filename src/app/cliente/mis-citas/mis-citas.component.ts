@@ -109,11 +109,11 @@ export class MisCitasComponent implements OnInit {
       case 'PENDIENTE':
         return 'bg-warning text-dark';
       case 'CONFIRMADA':
-        return 'bg-success';
+        return 'bg-info text-dark';
       case 'CANCELADA':
         return 'bg-danger';
       case 'COMPLETADA':
-        return 'bg-secondary';
+        return 'bg-success';
       default:
         return 'bg-secondary';
     }
@@ -139,5 +139,21 @@ export class MisCitasComponent implements OnInit {
 
   canCancel(cita: CitaResponse): boolean {
     return cita.estado === 'PENDIENTE' || cita.estado === 'CONFIRMADA';
+  }
+
+  downloadRecibo(id: number): void {
+    this.citaService.downloadRecibo(id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `recibo_cita_${id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => alert('Error al descargar el recibo')
+    });
   }
 }

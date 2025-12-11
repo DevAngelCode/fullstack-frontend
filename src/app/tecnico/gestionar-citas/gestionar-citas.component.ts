@@ -93,9 +93,26 @@ export class GestionarCitasComponent implements OnInit {
   getStatusBadgeClass(estado: string): string {
     switch (estado) {
       case 'PENDIENTE': return 'badge bg-warning text-dark';
+      case 'CONFIRMADA': return 'badge bg-info text-dark';
       case 'COMPLETADA': return 'badge bg-success';
       case 'CANCELADA': return 'badge bg-danger';
       default: return 'badge bg-secondary';
     }
+  }
+
+  downloadRecibo(id: number): void {
+    this.citaService.downloadRecibo(id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `recibo_cita_${id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => alert('Error al descargar el recibo')
+    });
   }
 }

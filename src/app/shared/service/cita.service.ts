@@ -60,4 +60,8 @@ export class CitaService {
     updateEstadoCita(id: number, estado: string): Observable<CitaResponse> {
         return this.http.put<CitaResponse>(`${this.apiUrl}/citas/${id}/estado`, {}, { params: { estado } });
     }
+
+    downloadRecibo(id: number): Observable<Blob> {
+        return this.http.get(`${this.apiUrl}/citas/${id}/recibo`, { responseType: 'blob' });
+    }
 }
