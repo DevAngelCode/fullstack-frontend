@@ -4,4 +4,6 @@ export interface ProfileRequest {
     username: string;
     email: string;
     telefono: string;
+    imagenBase64?: string;
+    tipoImagen?: string;
 }

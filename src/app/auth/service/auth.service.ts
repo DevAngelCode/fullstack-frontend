@@ -38,6 +38,12 @@ export class AuthService {
     );
   }
 
+  public updateCurrentUser(user: LoginResponse): void {
+    this.currentUserSubject.next(user);
+    // LocalStorage already updated by caller, but we can ensure consistency if we want
+    // localStorage.setItem('user', JSON.stringify(user)); 
+  }
+
   register(registerRequest: RegisterRequest): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(API_URL + 'register', registerRequest);
   }

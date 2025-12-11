@@ -7,4 +7,6 @@ export interface UserProfileResponse {
     telefono: string; // New field
     roles: string[];
     enabled: boolean;
+    imagenBase64?: string;
+    tipoImagen?: string;
 }

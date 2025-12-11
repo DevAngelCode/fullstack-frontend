@@ -1,0 +1,160 @@
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Gestionar Citas</h2>
+            <p class="text-secondary mb-0">Administra y actualiza tus servicios asignados.</p>
+        </div>
+        <button class="btn btn-outline-secondary btn-sm" (click)="loadCitas()">
+            <i class="fa-solid fa-sync me-1"></i> Actualizar
+        </button>
+    </div>
+
+    <!-- Filters Card -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body bg-light rounded-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label small fw-bold text-secondary">Buscar Cliente / ID</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i
+                                class="fa-solid fa-search text-muted"></i></span>
+                        <input type="text" class="form-control border-start-0 ps-0" placeholder="Nombre o ID..."
+                            [(ngModel)]="filterNombre" (input)="applyFilters()">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Estado</label>
+                    <select class="form-select" [(ngModel)]="filterEstado" (change)="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="PENDIENTE">Pendiente</option>
+                        <option value="COMPLETADA">Completada</option>
+                        <option value="CANCELADA">Cancelada</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Fecha</label>
+                    <input type="date" class="form-control" [(ngModel)]="filterFecha" (change)="applyFilters()">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-secondary w-100" (click)="clearFilters()">
+                        <i class="fa-solid fa-filter-circle-xmark me-1"></i> Limpiar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="ps-4">ID</th>
+                            <th scope="col">Cliente</th>
+                            <th scope="col">Servicio</th>
+                            <th scope="col">Fecha & Hora</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col" class="text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="loading">
+                            <td colspan="6" class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!loading && filteredCitas.length === 0">
+                            <td colspan="6" class="text-center py-5 text-secondary">
+                                <p class="mb-0">No se encontraron citas con los filtros actuales.</p>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let cita of filteredCitas">
+                            <td class="ps-4 fw-bold text-secondary">#{{ cita.id }}</td>
+                            <td>{{ cita.usuarioNombre }}</td>
+                            <td>
+                                <span class="d-block text-dark fw-medium">{{ cita.servicioNombre }}</span>
+                                <span class="small text-muted">{{ cita.sedeNombre }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="fw-medium">{{ cita.fecha | date:'dd/MM/yyyy' }}</span>
+                                    <span class="text-secondary small">{{ cita.hora }}</span>
+                                </div>
+                            </td>
+                            <td><span [class]="getStatusBadgeClass(cita.estado)">{{ cita.estado }}</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-outline-primary me-1" (click)="openDetalle(cita)"
+                                    title="Ver Detalle">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                                <ng-container *ngIf="cita.estado === 'PENDIENTE'">
+                                    <button class="btn btn-sm btn-success me-1"
+                                        (click)="cambiarEstado(cita.id, 'COMPLETADA')" title="Completar">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger"
+                                        (click)="cambiarEstado(cita.id, 'CANCELADA')" title="Cancelar">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Simple Modal Overlay -->
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" *ngIf="selectedCita">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">Detalle de Cita #{{ selectedCita.id }}</h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeDetalle()"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3">
+                    <label class="small text-secondary fw-bold text-uppercase">Cliente</label>
+                    <div class="fs-5">{{ selectedCita.usuarioNombre }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="small text-secondary fw-bold text-uppercase">Servicio</label>
+                        <div>{{ selectedCita.servicioNombre }}</div>
+                    </div>
+                    <div class="col-6">
+                        <label class="small text-secondary fw-bold text-uppercase">Precio</label>
+                        <div class="text-success fw-bold">S/ {{ selectedCita.servicioPrecio }}</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="small text-secondary fw-bold text-uppercase">Sede</label>
+                    <div><i class="fa-solid fa-location-dot text-danger me-1"></i> {{ selectedCita.sedeNombre }}</div>
+                    <div class="small text-muted ms-3">{{ selectedCita.sedeDireccion }}</div>
+                </div>
+                <div class="mb-3">
+                    <label class="small text-secondary fw-bold text-uppercase">Notas del Cliente</label>
+                    <div class="p-2 bg-light rounded border text-muted fst-italic">
+                        {{ selectedCita.notas || 'Sin notas adicionales.' }}
+                    </div>
+                </div>
+                <div class="mb-0">
+                    <label class="small text-secondary fw-bold text-uppercase">Estado Actual</label>
+                    <div class="mt-1"><span [class]="getStatusBadgeClass(selectedCita.estado)" class="fs-6">{{
+                            selectedCita.estado }}</span></div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" (click)="closeDetalle()">Cerrar</button>
+                <ng-container *ngIf="selectedCita.estado === 'PENDIENTE'">
+                    <button type="button" class="btn btn-success"
+                        (click)="cambiarEstado(selectedCita.id, 'COMPLETADA')">Realizada</button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

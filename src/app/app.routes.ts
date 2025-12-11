@@ -18,6 +18,7 @@ import { GenerarCitaComponent } from './public/pages/generar-cita/generar-cita.c
 import { MisCitasComponent } from './cliente/mis-citas/mis-citas.component'; // Import MisCitasComponent
 
 import { UsuariosComponent } from './admin/usuarios/usuarios.component'; // Import UsuariosComponent
+import { GestionarCitasComponent } from './tecnico/gestionar-citas/gestionar-citas.component'; // Import GestionarCitasComponent
 
 export const routes: Routes = [
   { path: '', component: PaginaPrincipalComponent }, // Public home page
@@ -57,6 +58,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: TecnicoDashboardComponent },
       { path: 'profile', component: ProfileComponent }, // Tecnico profile route
+      { path: 'gestionar-citas', component: GestionarCitasComponent }, // Tecnico manage appointments route
       { path: '**', redirectTo: 'dashboard' }
     ]
   },

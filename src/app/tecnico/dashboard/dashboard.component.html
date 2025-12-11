@@ -1,15 +1,68 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header bg-primary text-white">
-          <h3 class="mb-0">Dashboard del Técnico</h3>
-        </div>
+<div class="container mt-4 mb-5">
+  <!-- Header with Welcome -->
+  <div class="d-flex align-items-center mb-4">
+    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3 shadow"
+      style="width: 60px; height: 60px; font-size: 1.5rem;">
+      <i class="fa-solid fa-user-gear"></i>
+    </div>
+    <div>
+      <h2 class="fw-bold mb-0">Hola, Técnico</h2>
+      <p class="text-secondary mb-0">Bienvenido a tu panel de control.</p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 border-start border-4 border-primary">
         <div class="card-body">
-          <p>¡Bienvenido al Dashboard del Técnico!</p>
-          <!-- Add tecnico-specific content here -->
+          <h6 class="text-uppercase text-secondary small fw-bold">Total Asignadas</h6>
+          <h2 class="mb-0 fw-bold text-primary">{{ stats.total }}</h2>
         </div>
       </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 border-start border-4 border-warning">
+        <div class="card-body">
+          <h6 class="text-uppercase text-secondary small fw-bold">Pendientes</h6>
+          <h2 class="mb-0 fw-bold text-warning">{{ stats.pendientes }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 border-start border-4 border-success">
+        <div class="card-body">
+          <h6 class="text-uppercase text-secondary small fw-bold">Completadas</h6>
+          <h2 class="mb-0 fw-bold text-success">{{ stats.completadas }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions Grid -->
+  <h5 class="fw-bold mb-3 text-secondary">Accesos Rápidos</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-md-6 col-lg-4">
+      <a routerLink="/tecnico/gestionar-citas" class="text-decoration-none">
+        <div class="card border-0 shadow-sm lift-hover h-100 text-center py-4">
+          <div class="card-body">
+            <div class="mb-3 text-primary"><i class="fa-solid fa-list-check fa-3x"></i></div>
+            <h5 class="fw-bold text-dark">Gestionar Citas</h5>
+            <p class="text-muted small mb-0">Ver listado completo, filtrar por fecha/estado y atender servicios.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <a routerLink="/tecnico/profile" class="text-decoration-none">
+        <div class="card border-0 shadow-sm lift-hover h-100 text-center py-4">
+          <div class="card-body">
+            <div class="mb-3 text-info"><i class="fa-solid fa-user-pen fa-3x"></i></div>
+            <h5 class="fw-bold text-dark">Mi Perfil</h5>
+            <p class="text-muted small mb-0">Actualizar foto, contraseña e información personal.</p>
+          </div>
+        </div>
+      </a>
     </div>
   </div>
 </div>

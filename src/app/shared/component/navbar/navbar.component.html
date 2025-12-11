@@ -9,27 +9,28 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-
-        <!-- Public Links (visible only if NOT admin or tecnico) -->
+      <!-- Left Aligned Links (Main Navigation) -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Public Links -->
         <ng-container *ngIf="!hasRole('ROLE_ADMIN') && !hasRole('ROLE_TECNICO')">
           <li class="nav-item">
             <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
               <i class="fa-solid fa-house me-1"></i> Inicio
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/servicios" routerLinkActive="active">
+              <i class="fa-solid fa-screwdriver-wrench me-1"></i> Servicios
+            </a>
+          </li>
         </ng-container>
 
-        <!-- Links for Authenticated Users -->
+        <!-- Authenticated Links -->
         <ng-container *ngIf="isLoggedIn">
+          <!-- Admin Links -->
           <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
             <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">
               <i class="fa-solid fa-gauge me-1"></i> Admin Dashboard
-            </a>
-          </li>
-          <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
-            <a class="nav-link" routerLink="/admin/profile" routerLinkActive="active">
-              <i class="fa-solid fa-user-tie me-1"></i> Perfil
             </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_ADMIN')">
@@ -47,34 +48,62 @@
               <i class="fa-solid fa-users me-1"></i> Usuarios
             </a>
           </li>
-          <li class="nav-item" *ngIf="hasRole('ROLE_CLIENTE')">
-            <a class="nav-link" routerLink="/cliente/profile" routerLinkActive="active">
-              <i class="fa-solid fa-user me-1"></i> Mi Perfil
-            </a>
-          </li>
+
+          <!-- Client Links -->
           <li class="nav-item" *ngIf="hasRole('ROLE_CLIENTE')">
             <a class="nav-link" routerLink="/cliente/citas" routerLinkActive="active">
               <i class="fa-solid fa-calendar-check me-1"></i> Mis Citas
             </a>
           </li>
+
+          <!-- Technician Links -->
           <li class="nav-item" *ngIf="hasRole('ROLE_TECNICO')">
             <a class="nav-link" routerLink="/tecnico/dashboard" routerLinkActive="active">
-              <i class="fa-solid fa-clipboard-list me-1"></i> Dashboard
+              <i class="fa-solid fa-gauge me-1"></i> Dashboard
             </a>
           </li>
           <li class="nav-item" *ngIf="hasRole('ROLE_TECNICO')">
-            <a class="nav-link" routerLink="/tecnico/profile" routerLinkActive="active">
-              <i class="fa-solid fa-user-gear me-1"></i> Perfil
+            <a class="nav-link" routerLink="/tecnico/gestionar-citas" routerLinkActive="active">
+              <i class="fa-solid fa-list-check me-1"></i> Gestionar Citas
             </a>
           </li>
-          <li class="nav-item ms-lg-2">
-            <button (click)="logout()" class="btn btn-danger btn-sm">
-              <i class="fa-solid fa-right-from-bracket me-1"></i> Cerrar Sesión
-            </button>
-          </li>
         </ng-container>
+      </ul>
 
-        <!-- Links for Non-Authenticated Users -->
+      <!-- Right Aligned Items (Profile & Auth) -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+        <!-- Profile Dropdown (Authenticated) -->
+        <li class="nav-item dropdown" *ngIf="isLoggedIn">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- Avatar -->
+            <div class="rounded-circle overflow-hidden border border-2 border-secondary me-2"
+              style="width: 35px; height: 35px; background-color: #333;">
+              <img [src]="(authService.currentUserValue?.imagenBase64) || 'assets/default.webp'" alt="Avatar"
+                class="w-100 h-100 object-fit-cover">
+            </div>
+            <span class="d-none d-lg-inline">{{ authService.currentUserValue?.username }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarDropdown">
+            <li>
+              <a class="dropdown-item"
+                [routerLink]="hasRole('ROLE_ADMIN') ? '/admin/profile' : (hasRole('ROLE_TECNICO') ? '/tecnico/profile' : '/cliente/profile')">
+                <i class="fa-solid fa-user me-2"></i> Mi Perfil
+              </a>
+            </li>
+            <!-- Redundant dashboard links in dropdown removed for cleaner UI as they are on the bar now, or can keep as shortcut -->
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <button class="dropdown-item text-danger" (click)="logout()">
+                <i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión
+              </button>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Auth Buttons (Non-Authenticated) -->
         <ng-container *ngIf="!isLoggedIn">
           <li class="nav-item">
             <a class="nav-link" routerLink="/auth/login" routerLinkActive="active">

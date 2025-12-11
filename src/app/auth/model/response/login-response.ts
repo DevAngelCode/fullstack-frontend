@@ -5,4 +5,6 @@ export class LoginResponse {
   email?: string;
   roles?: string[];
   message?: string;
+  imagenBase64?: string;
+  tipoImagen?: string;
 }

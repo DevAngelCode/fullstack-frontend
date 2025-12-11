@@ -56,4 +56,8 @@ export class CitaService {
     cancelarCita(id: number): Observable<CitaResponse> {
         return this.http.put<CitaResponse>(`${this.apiUrl}/citas/${id}/cancelar`, {});
     }
+
+    updateEstadoCita(id: number, estado: string): Observable<CitaResponse> {
+        return this.http.put<CitaResponse>(`${this.apiUrl}/citas/${id}/estado`, {}, { params: { estado } });
+    }
 }

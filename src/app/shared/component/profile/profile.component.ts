@@ -27,6 +27,12 @@ export class ProfileComponent implements OnInit {
   isPasswordError: boolean = false;
   isCurrentPasswordValid: boolean = false;
 
+  // Image properties
+  selectedImageBase64: string | null = null;
+  imagePreview: string | null = null;
+  selectedFileError: string | null = null;
+  currentFormat: string | null = null;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -35,10 +41,10 @@ export class ProfileComponent implements OnInit {
   ) {
     this.profileForm = this.fb.group({
       nombre: ['', Validators.required],
-      apellido: [''], // New field, optional
-      username: ['', Validators.required], // New field
+      apellido: [''],
+      username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      telefono: [''] // New field, optional
+      telefono: ['']
     });
 
     this.passwordForm = this.fb.group({
@@ -69,6 +75,10 @@ export class ProfileComponent implements OnInit {
               email: profileResponse.email,
               telefono: profileResponse.telefono
             });
+            if (profileResponse.imagenBase64) {
+              this.imagePreview = profileResponse.imagenBase64;
+              this.selectedImageBase64 = profileResponse.imagenBase64;
+            }
           },
           error: (error) => {
             this.message = 'Failed to load profile: ' + (error.error?.message || error.message);
@@ -83,6 +93,29 @@ export class ProfileComponent implements OnInit {
       this.message = 'Usuario no ha iniciado sesión o datos no encontrados.';
       this.isError = true;
     }
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFileError = null;
+    const file: File = event.target.files[0];
+    if (file) {
+      if (!file.type.match(/image\/(jpeg|png|webp)/)) {
+        this.selectedFileError = 'Solo se permiten archivos de imagen (JPEG, PNG, WEBP).';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImageBase64 = e.target.result;
+        this.imagePreview = e.target.result;
+        this.currentFormat = file.type;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  triggerFileInput(): void {
+    const fileInput = document.getElementById('fileInput') as HTMLElement;
+    fileInput.click();
   }
 
   onSubmit(): void {
@@ -102,22 +135,38 @@ export class ProfileComponent implements OnInit {
     }
 
     const { nombre, apellido, username, email, telefono } = this.profileForm.value;
-    const updateData: ProfileRequest = { nombre, apellido, username, email, telefono };
+    const updateData: ProfileRequest = {
+      nombre,
+      apellido,
+      username,
+      email,
+      telefono,
+      imagenBase64: this.selectedImageBase64 || undefined,
+      tipoImagen: this.currentFormat || undefined
+    };
 
     this.usuarioService.updateUserProfile(this.userId, updateData).subscribe({
       next: (response: UserProfileResponse) => {
         this.message = '¡Perfil actualizado exitosamente!';
         this.isError = false;
         // Update local storage with new user data
+        const currentUserData = JSON.parse(this.localStorageService.getItem('user') || '{}');
         const updatedUser = {
-          ...JSON.parse(this.localStorageService.getItem('user') || '{}'),
+          ...currentUserData,
           nombre: response.nombre,
           apellido: response.apellido,
           username: response.username,
           email: response.email,
-          telefono: response.telefono
+          telefono: response.telefono,
+          imagenBase64: response.imagenBase64, // Update image in local storage
+          tipoImagen: response.tipoImagen
         };
         this.localStorageService.setItem('user', JSON.stringify(updatedUser));
+
+        // Notify AuthService to update observable so navbar reflects changes immediately
+        // We might need to expose a method in AuthService to update current value from outside
+        // Or simply reloading the user from local storage in AuthService
+        this.authService.updateCurrentUser(updatedUser);
       },
       error: (error: any) => {
         this.message = 'Error al actualizar el perfil: ' + (error.error?.message || error.message);

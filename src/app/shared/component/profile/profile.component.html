@@ -8,6 +8,28 @@
         </div>
         <div class="card-body">
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+            <!-- Image Upload Section -->
+            <div class="d-flex flex-column align-items-center mb-4">
+              <div class="position-relative mb-3">
+                <div class="rounded-circle overflow-hidden border border-3 border-primary shadow-sm"
+                  style="width: 150px; height: 150px; background-color: #f8f9fa;">
+                  <img [src]="imagePreview || 'assets/default.webp'" alt="Profile Preview"
+                    class="w-100 h-100 object-fit-cover">
+                </div>
+                <!-- Camera Icon Overlay -->
+                <button type="button" class="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 end-0 m-2"
+                  (click)="triggerFileInput()" title="Cambiar foto">
+                  <i class="fa-solid fa-camera"></i>
+                </button>
+              </div>
+              <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" class="d-none">
+              <div *ngIf="selectedFileError" class="text-danger small mt-1">
+                {{ selectedFileError }}
+              </div>
+              <small class="text-muted">Haga clic en la cámara para subir una foto</small>
+            </div>
+
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
               <input type="text" id="nombre" formControlName="nombre" class="form-control"
